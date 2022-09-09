@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < _height; j++)
             {
-                var node = Instantiate(nodePrefab, new Vector2(i, j), Quaternion.identity,nodeParent);
+                var node = Instantiate(nodePrefab, new Vector2(i, j), Quaternion.identity, nodeParent);
                 nodes.Add(node);
             }
         }
@@ -94,7 +94,19 @@ public class GameManager : MonoBehaviour
         blocks.Add(block);
         node.occupiedBlock = block;
         block.occupiedNode = node;
-        block.Init(GetRandomBlockType(minSpawnValue,maxSpawnValue));
+        block.Init(GetRandomBlockType(minSpawnValue, maxSpawnValue));
+        spawnableBlockTypes.Clear();
+    }
+
+    private void SpawnNewBlock(Node node, BlockType blockType)
+    {
+        var block = Instantiate(blockPrefab, node.Pos, Quaternion.identity, blockParent);
+        blocks.Add(block);
+        node.occupiedBlock = block;
+        block.occupiedNode = node;
+        // nodes.Add(node);
+        emptyNodes.Remove(node);
+        block.Init(blockType);
         spawnableBlockTypes.Clear();
     }
 
@@ -108,6 +120,18 @@ public class GameManager : MonoBehaviour
             }
         }
         return spawnableBlockTypes[UnityEngine.Random.Range(0, spawnableBlockTypes.Count)];
+    }
+
+    private BlockType GetBlockType(int value)
+    {
+        foreach (BlockType blockType in types)
+        {
+            if (blockType.value == value)
+            {
+                return blockType;
+            }
+        }
+        return types[0];
     }
 
     private int FindAvailableNodes()
@@ -185,21 +209,30 @@ public class GameManager : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && closestBlock != null)
         {
-            if(matchedBlocks.Count >= 2)
+            if (matchedBlocks.Count >= 2)
             {
                 foreach (Block block in matchedBlocks)
                 {
                     emptyNodes.Add(block.occupiedNode);
+                    // nodes.Remove(block.occupiedNode);
                     block.occupiedNode.occupiedBlock = null;
                     blocks.Remove(block);
-                    Destroy(block.gameObject);
+                    block._spriteRenderer.sortingOrder = -1;
+                    block.transform.DOScale(Vector3.zero, 0.25f);
+                    block.transform.DOMove(matchedBlocks[matchedBlocks.Count - 1].Pos, 0.25f);
+                    Destroy(block.gameObject,0.30f);
                 }
-                matchedBlocks.Clear();
+                
                 foreach (Line line in lines)
                 {
                     Destroy(line.gameObject);
                 }
+                
+                SpawnMatchBlock(matchedBlocks, matchedBlocks[matchedBlocks.Count - 1].occupiedNode);
+
+                matchedBlocks.Clear();
                 lines.Clear();
+
                 ChangeState(GameState.UpdateGame);
             }
             else
@@ -240,13 +273,58 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    private void UpdateWorld()
+    private void SpawnMatchBlock(List<Block> matchedBlocks, Node spawnNode)
     {
-        foreach (Node node in emptyNodes)
+        int matchValue = 0;
+        if (matchedBlocks.Count <= 3)
         {
-            Node upNode = nodes.Where(n => n.Pos == node.Pos + Vector2.up).FirstOrDefault();
+            matchValue = matchedBlocks[0].value * 2;
+        }
+        else if (matchedBlocks.Count <= 7 && matchedBlocks.Count > 3)
+        {
+            matchValue = matchedBlocks[0].value * 4;
+        }
+        else if (matchedBlocks.Count <= 15 && matchedBlocks.Count > 7)
+        {
+            matchValue = matchedBlocks[0].value * 8;
         }
 
+        SpawnNewBlock(spawnNode, GetBlockType(matchValue));
+    }
+    private void UpdateWorld()
+    {
+        foreach (Node emptyNode in emptyNodes)
+        {
+            foreach (Node node in nodes)
+            {
+                if (emptyNode.Pos + Vector2.up == node.Pos)
+                {
+                    if (node.occupiedBlock == null) continue;
+                    node.occupiedBlock._trasform.DOLocalMoveY(node.Pos.y + Vector3.down.y, 1);
+                    node.MoveTo(Vector3.down);
+                    emptyNode.MoveTo(Vector3.up);
+                }
+                else if (emptyNode.Pos + Vector2.up * 2 == node.Pos)
+                {
+                    if (node.occupiedBlock == null) continue;
+                    node.occupiedBlock._trasform.DOLocalMoveY(node.Pos.y + Vector3.down.y * 2, 1);
+                    node.MoveTo(Vector3.down * 2);
+                    emptyNode.MoveTo(Vector3.up * 2);
+                }
+                else if (emptyNode.Pos + Vector2.up * 3 == node.Pos)
+                {
+                    if (node.occupiedBlock == null) continue;
+                    node.occupiedBlock._trasform.DOLocalMoveY(node.Pos.y + Vector3.down.y * 3, 1);
+                    node.MoveTo(Vector3.down * 3);
+                    emptyNode.MoveTo(Vector3.up * 3);
+                }
+            }
+        }
+
+        Invoke(nameof(ChangeStateToWaitingInput), 1);
+    }
+    private void ChangeStateToWaitingInput()
+    {
         ChangeState(GameState.WaitingInput);
     }
 }
