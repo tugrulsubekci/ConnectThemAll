@@ -1,13 +1,19 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    private int value;
+    public int value;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private TextMeshPro _valueText;
+    public Node occupiedNode;
 
-    public void Init(TypeOfBlock blockType)
+    private Transform _transform => transform;
+    public Vector2 Pos => transform.position;
+    public Color color => _spriteRenderer.color;
+
+    public void Init(BlockType blockType)
     {
         value = blockType.value;
         _spriteRenderer.color = blockType.color;
