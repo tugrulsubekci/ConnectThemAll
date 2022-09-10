@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
     private float scaleMultiplier = 1.1f;
     private int minSpawnValue = 2;
     private int maxSpawnValue = 64;
+    private float shiftSpeed = 0.5f;
 
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
@@ -50,10 +52,11 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.WaitingInput:
                 break;
-            case GameState.UpdateGame:
-                UpdateWorld();
+            case GameState.ShiftBlocks:
+                Shift();
                 break;
-            case GameState.Spawn:
+            case GameState.FillNodes:
+                FillEmptyNodes();
                 break;
             default:
                 break;
@@ -75,30 +78,32 @@ public class GameManager : MonoBehaviour
         var board = Instantiate(boardPrefab, center, Quaternion.identity);
         board.size = new Vector2(_width, _height);
 
-        SpawnBlocks(FindAvailableNodes());
+        FillAllNodes(FindAvailableNodes());
 
         ChangeState(GameState.WaitingInput);
     }
 
-    private void SpawnBlocks(int amount)
+    private void FillAllNodes(int amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            SpawnBlock(nodes[i]);
+            SpawnRandomBlock(nodes[i]);
         }
     }
 
-    private void SpawnBlock(Node node)
+    private void SpawnRandomBlock(Node node)
     {
         var block = Instantiate(blockPrefab, node.Pos, Quaternion.identity, blockParent);
+        block._trasform.localScale = Vector2.zero;
         blocks.Add(block);
         node.occupiedBlock = block;
         block.occupiedNode = node;
         block.Init(GetRandomBlockType(minSpawnValue, maxSpawnValue));
         spawnableBlockTypes.Clear();
+        block._trasform.DOScale(Vector3.one * 0.8f, 0.2f);
     }
 
-    private void SpawnNewBlock(Node node, BlockType blockType)
+    private void SpawnSpecificBlock(Node node, BlockType blockType)
     {
         var block = Instantiate(blockPrefab, node.Pos, Quaternion.identity, blockParent);
         blocks.Add(block);
@@ -122,7 +127,7 @@ public class GameManager : MonoBehaviour
         return spawnableBlockTypes[UnityEngine.Random.Range(0, spawnableBlockTypes.Count)];
     }
 
-    private BlockType GetBlockType(int value)
+    private BlockType GetSpecificBlockTypeWithValue(int value)
     {
         foreach (BlockType blockType in types)
         {
@@ -233,7 +238,7 @@ public class GameManager : MonoBehaviour
                 matchedBlocks.Clear();
                 lines.Clear();
 
-                ChangeState(GameState.UpdateGame);
+                ChangeState(GameState.ShiftBlocks);
             }
             else
             {
@@ -289,42 +294,50 @@ public class GameManager : MonoBehaviour
             matchValue = matchedBlocks[0].value * 8;
         }
 
-        SpawnNewBlock(spawnNode, GetBlockType(matchValue));
+        SpawnSpecificBlock(spawnNode, GetSpecificBlockTypeWithValue(matchValue));
     }
-    private void UpdateWorld()
+    private void Shift()
     {
+        nodes = nodes.OrderBy(b => b.Pos.x).ThenBy(b => b.Pos.y).ToList();
         foreach (Node emptyNode in emptyNodes)
         {
             foreach (Node node in nodes)
             {
-                if (emptyNode.Pos + Vector2.up == node.Pos)
+                if (emptyNode.Pos + Vector2.up == node.Pos && node.occupiedBlock != null)
                 {
-                    if (node.occupiedBlock == null) continue;
-                    node.occupiedBlock._trasform.DOLocalMoveY(node.Pos.y + Vector3.down.y, 1);
+                    node.occupiedBlock._trasform.DOLocalMoveY(node.Pos.y + Vector3.down.y, shiftSpeed);
                     node.MoveTo(Vector3.down);
                     emptyNode.MoveTo(Vector3.up);
                 }
-                else if (emptyNode.Pos + Vector2.up * 2 == node.Pos)
+                else if (emptyNode.Pos + Vector2.up * 2 == node.Pos && node.occupiedBlock != null)
                 {
-                    if (node.occupiedBlock == null) continue;
-                    node.occupiedBlock._trasform.DOLocalMoveY(node.Pos.y + Vector3.down.y * 2, 1);
+                    node.occupiedBlock._trasform.DOLocalMoveY(node.Pos.y + Vector3.down.y * 2, shiftSpeed);
                     node.MoveTo(Vector3.down * 2);
                     emptyNode.MoveTo(Vector3.up * 2);
                 }
-                else if (emptyNode.Pos + Vector2.up * 3 == node.Pos)
+                else if (emptyNode.Pos + Vector2.up * 3 == node.Pos && node.occupiedBlock != null)
                 {
-                    if (node.occupiedBlock == null) continue;
-                    node.occupiedBlock._trasform.DOLocalMoveY(node.Pos.y + Vector3.down.y * 3, 1);
+                    node.occupiedBlock._trasform.DOLocalMoveY(node.Pos.y + Vector3.down.y * 3, shiftSpeed);
                     node.MoveTo(Vector3.down * 3);
                     emptyNode.MoveTo(Vector3.up * 3);
                 }
             }
         }
 
-        Invoke(nameof(ChangeStateToWaitingInput), 1);
+        Invoke(nameof(ChangeStateToFillNodes), shiftSpeed);
     }
-    private void ChangeStateToWaitingInput()
+    private void ChangeStateToFillNodes()
     {
+        ChangeState(GameState.FillNodes);
+    }
+
+    private void FillEmptyNodes()
+    {
+        foreach (Node emptyNode in emptyNodes)
+        {
+            SpawnRandomBlock(emptyNode);
+        }
+        emptyNodes.Clear();
         ChangeState(GameState.WaitingInput);
     }
 }
@@ -340,6 +353,6 @@ public enum GameState
 {
     GenerateGame,
     WaitingInput,
-    UpdateGame,
-    Spawn,
+    ShiftBlocks,
+    FillNodes,
 }
