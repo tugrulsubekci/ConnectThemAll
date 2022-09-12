@@ -495,27 +495,66 @@ MonoBehaviour:
   types:
   - value: 2
     color: {r: 0.9137255, g: 0.40392157, b: 0.5568628, a: 1}
+    valueString: 2
   - value: 4
     color: {r: 0.8901961, g: 0.34509805, b: 0.22745098, a: 1}
+    valueString: 4
   - value: 8
     color: {r: 0.99607843, g: 0.7294118, b: 0.20392157, a: 1}
+    valueString: 8
   - value: 16
     color: {r: 0.89411765, g: 0.5019608, b: 0.23137255, a: 1}
+    valueString: 16
   - value: 32
     color: {r: 0.4509804, g: 0.79607844, b: 0.32941177, a: 1}
+    valueString: 32
   - value: 64
     color: {r: 0.3019608, g: 0.8156863, b: 0.6431373, a: 1}
+    valueString: 64
   - value: 128
     color: {r: 0.4117647, g: 0.7372549, b: 0.90588236, a: 1}
+    valueString: 128
   - value: 256
     color: {r: 0.42745098, g: 0.57254905, b: 0.85882354, a: 1}
+    valueString: 256
   - value: 512
     color: {r: 0.8235294, g: 0.56078434, b: 0.80784315, a: 1}
+    valueString: 512
   - value: 1024
     color: {r: 0.6, g: 0.41960785, b: 0.8235294, a: 1}
+    valueString: 1K
   - value: 2048
-    color: {r: 0.8352941, g: 0.37254903, b: 0.5254902, a: 1}
+    color: {r: 0.91372555, g: 0.4039216, b: 0.5568628, a: 1}
+    valueString: 2K
+  - value: 4096
+    color: {r: 0.89019614, g: 0.34509805, b: 0.227451, a: 1}
+    valueString: 4K
+  - value: 8192
+    color: {r: 0.9960785, g: 0.7294118, b: 0.20392159, a: 1}
+    valueString: 8K
+  - value: 16384
+    color: {r: 0.8941177, g: 0.5019608, b: 0.23137257, a: 1}
+    valueString: 16K
+  - value: 32768
+    color: {r: 0.45098042, g: 0.7960785, b: 0.32941177, a: 1}
+    valueString: 32K
+  - value: 65536
+    color: {r: 0.3019608, g: 0.81568635, b: 0.6431373, a: 1}
+    valueString: 64K
+  - value: 131072
+    color: {r: 0.41176474, g: 0.7372549, b: 0.9058824, a: 1}
+    valueString: 128K
+  - value: 262144
+    color: {r: 0.427451, g: 0.57254905, b: 0.8588236, a: 1}
+    valueString: 256K
+  - value: 524288
+    color: {r: 0.8235295, g: 0.56078434, b: 0.8078432, a: 1}
+    valueString: 512K
+  - value: 1048576
+    color: {r: 0.6, g: 0.41960788, b: 0.8235295, a: 1}
+    valueString: 1M
   nodeParent: {fileID: 1813839443}
   blockParent: {fileID: 29406109}
   lineParent: {fileID: 328349566}
   linePrefab: {fileID: 4413929446551958839, guid: e4207bb58f2002b4b9c7d122daa2675b, type: 3}
+  tapPrefab: {fileID: 6419549324408559261, guid: a949c2ffcab962549b6c5df0550346c1, type: 3}
