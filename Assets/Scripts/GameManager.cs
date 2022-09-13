@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 using Random = UnityEngine.Random;
+using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,11 +15,17 @@ public class GameManager : MonoBehaviour
     private int minSpawnValue = 2;
     private int maxSpawnValue = 64;
     private float shiftSpeed = 0.5f;
-    private Vector2 firstMousePos;
-    private Vector2 mousePos;
     private bool isTutorialCompleted;
     private bool isFirstTutorialCompleted;
+    private int scoreMultiplier = 1;
+    private float score = 0;
+    public float _time;
+    private float _passedTime;
+    private int currentLevel = 1;
 
+    [SerializeField] private Slider slider;
+    [SerializeField] private TextMeshProUGUI currentLevelText;
+    [SerializeField] private TextMeshProUGUI nextLevelText;
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private SpriteRenderer boardPrefab;
@@ -27,6 +35,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform lineParent;
     [SerializeField] private Line linePrefab;
     [SerializeField] private Tap tapPrefab;
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI scoreMultiplierText;
 
     private List<Node> nodes = new List<Node>();
     private List<Block> blocks = new List<Block>();
@@ -37,12 +47,14 @@ public class GameManager : MonoBehaviour
     private List<Node> emptyNodes = new List<Node>();
     private List<Node> tutorialNodes = new List<Node>();
 
-    private GameState _state;
     private Camera MainCam => Camera.main;
     private Block closestBlock;
     private Block selectedBlock;
     private Block showBlock;
     private Tap tap;
+    private GameState _state;
+    private Vector2 firstMousePos;
+    private Vector2 mousePos;
 
     private void Start()
     {
@@ -50,14 +62,17 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Tutorial);
     }
 
-    private void ChangeState(GameState newState)
+    public void ChangeState(GameState newState)
     {
         _state = newState;
 
         switch (newState)
         {
+            case GameState.MainMenu:
+                break;
             case GameState.Tutorial:
                 StartFirstTutorial();
+                ChangeState(GameState.MainMenu);
                 break;
             case GameState.GenerateGame:
                 GenerateGame();
@@ -230,7 +245,7 @@ public class GameManager : MonoBehaviour
     private void SpawnShowBlock()
     {
         showBlock = Instantiate(blockPrefab, new Vector3(2, 5, 0), Quaternion.identity, blockParent);
-        showBlock._trasform.localScale = Vector3.one * 0.6f;
+        showBlock._trasform.localScale = Vector3.one * 0.65f;
         showBlock.gameObject.SetActive(false);
     }
 
@@ -405,6 +420,7 @@ public class GameManager : MonoBehaviour
                     if (matchedBlocks.Count == 5)
                     {
                         isTutorialCompleted = true;
+                        tutorialNodes.Clear();
                         ResetWorld();
                         Invoke(nameof(GenerateGame), 1f);
                     }
@@ -423,6 +439,7 @@ public class GameManager : MonoBehaviour
 
             DeactivateShowBlock();
             matchedBlocks.Clear();
+            matchableBlocks.Clear();
             closestBlock = null;
             selectedBlock = null;
         }
@@ -457,8 +474,55 @@ public class GameManager : MonoBehaviour
 
     private void SpawnMatchBlock(List<Block> matchedBlocks, Node spawnNode)
     {
-        SpawnSpecificBlock(spawnNode, GetSpecificBlockTypeWithValue(CalculateMatchValue(matchedBlocks)));
+        int matchValue = CalculateMatchValue(matchedBlocks);
+        SpawnSpecificBlock(spawnNode, GetSpecificBlockTypeWithValue(matchValue));
         emptyNodes.Remove(spawnNode);
+        AddScore(matchValue);
+        if(isTutorialCompleted)
+        {
+            UpdateSlider();
+        }
+    }
+
+    private void AddScore(int value)
+    {
+        score += value * scoreMultiplier;
+        if(score < 1000)
+        {
+            scoreText.text = score.ToString();
+        }
+        else if (score < 1000000)
+        {
+            scoreText.text = $"{MathF.Round(score / 1000,1)}K";
+        }
+    }
+
+    private void UpdateSlider()
+    {
+        _passedTime = Time.time - _time;
+        _time = Time.time;
+
+        if (_passedTime > 4)
+        {
+            slider.value += 10;
+        }
+        else if(_passedTime <= 4)
+        {
+            slider.value += Mathf.RoundToInt(_passedTime * 2.5f);
+        }
+
+        if (slider.value == slider.maxValue)
+        {
+            LevelUp();
+        }
+    }
+
+    private void LevelUp()
+    {
+        currentLevel++;
+        currentLevelText.text = currentLevel.ToString();
+        nextLevelText.text = (currentLevel + 1).ToString();
+        slider.value = slider.minValue;
     }
 
     private int CalculateMatchValue(List<Block> matchedBlocks)
@@ -563,7 +627,39 @@ public class GameManager : MonoBehaviour
         SpawnSpecificBlock(emptyNode, GetSpecificBlockTypeWithValue(randomMatchableBlock.value));
     }
 
+    public void SortBlocks()
+    {
+        nodes = nodes.OrderBy(b => b.Pos.y).ThenBy(b => b.Pos.x).ToList();
+        blocks = blocks.OrderBy(b => b.value).Reverse().ToList();
 
+        for (int i = 0; i < blocks.Count; i++)
+        {
+            blocks[i].occupiedNode = null;
+            nodes[i].occupiedBlock = null;
+
+            blocks[i].occupiedNode = nodes[i];
+            nodes[i].occupiedBlock = blocks[i];
+            blocks[i]._trasform.DOMove(nodes[i].Pos, 1);
+        }
+    }
+
+    public void IncreaseScoreMultiplier()
+    {
+        scoreMultiplier++;
+        scoreMultiplierText.text = $"x{scoreMultiplier}";
+    }
+
+    public void DoubleAllBlocksButton()
+    {
+        foreach (Block block in blocks)
+        {
+            block._trasform.DORotate(new Vector3(360,0,0), 1, RotateMode.FastBeyond360).OnComplete(() =>
+            {
+                block.Init(GetSpecificBlockTypeWithValue(block.value * 2));
+            });
+            //block.Init(GetSpecificBlockTypeWithValue(block.value * 2));
+        }
+    }
 }
 
 [Serializable]
@@ -581,4 +677,5 @@ public enum GameState
     WaitingInput,
     ShiftBlocks,
     FillNodes,
+    MainMenu,
 }
