@@ -97,9 +97,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab4bf40e2877ee4692e9df117c1ef4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {x: 0.1, y: -0.5, z: 0}
-  path:
-  - {x: 1.1, y: 0.5, z: 0}
-  - {x: 2.1, y: -0.5, z: 0}
-  - {x: 3.1, y: 0.5, z: 0}
+  startPos: {x: 0.1, y: -1.5, z: 0}
+  secondPath:
+  - {x: 1.1, y: -0.5, z: 0}
+  - {x: 2.1, y: -1.5, z: 0}
+  - {x: 3.1, y: -0.5, z: 0}
+  - {x: 4.1, y: -1.5, z: 0}
+  thirdPath:
+  - {x: 0.1, y: -0.5, z: 0}
   - {x: 4.1, y: -0.5, z: 0}
+  - {x: 4.1, y: -1.5, z: 0}
+  - {x: 0.1, y: -1.5, z: 0}

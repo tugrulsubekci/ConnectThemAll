@@ -10,18 +10,12 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     private float _width = 5;
-    private float _height = 5;
+    private float _height = 6;
     private float scaleMultiplier = 1.1f;
-    private int minSpawnValue = 2;
-    private int maxSpawnValue = 64;
     private float shiftSpeed = 0.5f;
-    private bool isTutorialCompleted;
-    private bool isFirstTutorialCompleted;
-    private int scoreMultiplier = 1;
-    private float score = 0;
+    private int tutorialNumber = 1;
     public float _time;
     private float _passedTime;
-    private int currentLevel = 1;
 
     [SerializeField] private Slider slider;
     [SerializeField] private TextMeshProUGUI currentLevelText;
@@ -37,6 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Tap tapPrefab;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI scoreMultiplierText;
+    [SerializeField] private GameObject gamePlayButtons;
 
     private List<Node> nodes = new List<Node>();
     private List<Block> blocks = new List<Block>();
@@ -58,8 +53,25 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        UpdateGame();
+        GenerateGrid();
         SpawnShowBlock();
-        ChangeState(GameState.Tutorial);
+        if (!DataManager.Instance.tutorial)
+        {
+            ChangeState(GameState.Tutorial);
+        }
+        else
+        {
+            if (DataManager.Instance.values == null)
+            {
+                ChangeState(GameState.GenerateGame);
+            }
+            else
+            {
+                ChangeState(GameState.LoadGame);
+            }
+        }
+        
     }
 
     public void ChangeState(GameState newState)
@@ -77,6 +89,9 @@ public class GameManager : MonoBehaviour
             case GameState.GenerateGame:
                 GenerateGame();
                 break;
+            case GameState.LoadGame:
+                LoadGame();
+                break;
             case GameState.WaitingInput:
                 break;
             case GameState.ShiftBlocks:
@@ -89,30 +104,30 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    private void StartFirstTutorial()
+    private void GenerateGrid()
     {
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
             {
-                var node = Instantiate(nodePrefab, new Vector2(i, j), Quaternion.identity, nodeParent);
+                var node = Instantiate(nodePrefab, new Vector2(i, j - 1), Quaternion.identity, nodeParent);
                 nodes.Add(node);
             }
         }
-
-        var center = new Vector2(_width / 2 - 0.5f, _height / 2 - 0.5f);
+        var center = new Vector2(_width / 2 - 0.5f, _height / 2 - 1.5f);
 
         var board = Instantiate(boardPrefab, center, Quaternion.identity);
         board.size = new Vector2(_width, _height);
-
-        tutorialNodes = nodes.FindAll(n => n.Pos.y == 0);
+    }
+    private void StartFirstTutorial()
+    {
+        tutorialNodes = nodes.FindAll(n => n.Pos.y == -1);
 
         tap = Instantiate(tapPrefab, tapPrefab.startPos, Quaternion.identity);
 
         SpawnFirstTutorialBlocks();
-
-        
     }
+
     private void ResetFirstTutorial()
     {
         ResetWorld();
@@ -140,13 +155,14 @@ public class GameManager : MonoBehaviour
 
         ChangeState(GameState.WaitingInput);
     }
+
     private void StartSecondTutorial()
     {
         ResetWorld();
 
         tutorialNodes.Clear();
 
-        tutorialNodes = nodes.FindAll(n => n.Pos.y == 0 || n.Pos.y == 1);
+        tutorialNodes = nodes.FindAll(n => n.Pos.y == -1 || n.Pos.y == 0);
 
         Invoke(nameof(SpawnSecondTutorialBlocks), 1.25f);
     }
@@ -168,16 +184,63 @@ public class GameManager : MonoBehaviour
 
         ChangeState(GameState.WaitingInput);
     }
+
     private void ResetSecondTutorial()
     {
         ResetWorld();
         Invoke(nameof(SpawnSecondTutorialBlocks), 1.25f);
     }
+    private void StartThirdTutorial()
+    {
+        ResetWorld();
+
+        tutorialNodes.Clear();
+
+        tutorialNodes = nodes.FindAll(n => n.Pos.y == -1 || n.Pos.y == 0);
+
+        Invoke(nameof(SpawnThirdTutorialBlocks), 1.25f);
+    }
+    private void SpawnThirdTutorialBlocks()
+    {
+        SpawnSpecificBlock(tutorialNodes[0], GetSpecificBlockTypeWithValue(64));
+        SpawnSpecificBlock(tutorialNodes[1], GetSpecificBlockTypeWithValue(2));
+        SpawnSpecificBlock(tutorialNodes[2], GetSpecificBlockTypeWithValue(32));
+        SpawnSpecificBlock(tutorialNodes[3], GetSpecificBlockTypeWithValue(2));
+        SpawnSpecificBlock(tutorialNodes[4], GetSpecificBlockTypeWithValue(32));
+        SpawnSpecificBlock(tutorialNodes[5], GetSpecificBlockTypeWithValue(2));
+        SpawnSpecificBlock(tutorialNodes[6], GetSpecificBlockTypeWithValue(8));
+        SpawnSpecificBlock(tutorialNodes[7], GetSpecificBlockTypeWithValue(2));
+        SpawnSpecificBlock(tutorialNodes[8], GetSpecificBlockTypeWithValue(8));
+        SpawnSpecificBlock(tutorialNodes[9], GetSpecificBlockTypeWithValue(8));
+
+        tap.PlayTapAnimation(TutorialNumber.Third);
+
+        ChangeState(GameState.WaitingInput);
+    }
+
+    private void ResetThirdTutorial()
+    {
+        ResetWorld();
+        Invoke(nameof(SpawnThirdTutorialBlocks), 1.25f);
+    }
+
     private void GenerateGame()
     {
         FillAllNodes(FindAvailableNodes());
-
         ChangeState(GameState.WaitingInput);
+    }
+
+    private void LoadGame()
+    {
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            SpawnSpecificBlock(nodes[i], GetSpecificBlockTypeWithValue(DataManager.Instance.values[i]));
+        }
+    }
+
+    private void ChangeGameStateToGenerateGame()
+    {
+        ChangeState(GameState.GenerateGame);
     }
 
     private void FillAllNodes(int amount)
@@ -195,7 +258,7 @@ public class GameManager : MonoBehaviour
         blocks.Add(block);
         node.occupiedBlock = block;
         block.occupiedNode = node;
-        block.Init(GetRandomBlockType(minSpawnValue, maxSpawnValue));
+        block.Init(GetRandomBlockType(DataManager.Instance.minSpawnValue, DataManager.Instance.maxSpawnValue));
         spawnableBlockTypes.Clear();
         block._trasform.DOScale(Vector3.one * 0.8f, 0.2f);
     }
@@ -244,7 +307,8 @@ public class GameManager : MonoBehaviour
 
     private void SpawnShowBlock()
     {
-        showBlock = Instantiate(blockPrefab, new Vector3(2, 5, 0), Quaternion.identity, blockParent);
+        Vector3 showBlockPos = new Vector3(2,MainCam.ScreenToWorldPoint(gamePlayButtons.transform.GetChild(0).position).y);
+        showBlock = Instantiate(blockPrefab, showBlockPos, Quaternion.identity, blockParent);
         showBlock._trasform.localScale = Vector3.one * 0.65f;
         showBlock.gameObject.SetActive(false);
     }
@@ -280,7 +344,7 @@ public class GameManager : MonoBehaviour
                 closestBlock = null;
             }
 
-            if(!isTutorialCompleted)
+            if(!DataManager.Instance.tutorial)
             {
                 tap.StopTapAnimation();
             }
@@ -328,7 +392,7 @@ public class GameManager : MonoBehaviour
                         ActivateShowBlock();
 
                         var line = Instantiate(linePrefab, Vector2.zero, Quaternion.identity, lineParent);
-                        line.ChangeColor(closestBlock.color);
+                        line.ChangeColor(matchedBlocks[matchedBlocks.Count - 2].color,selectedBlock.color);
                         line.DrawLine(matchedBlocks[matchedBlocks.Count - 2].Pos, matchedBlocks[matchedBlocks.Count - 1].Pos);
                         lines.Add(line);
 
@@ -357,7 +421,7 @@ public class GameManager : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && closestBlock != null && blocks.Count > 0)
         {
-            if (matchedBlocks.Count >= 2 && isTutorialCompleted)
+            if (matchedBlocks.Count >= 2 && DataManager.Instance.tutorial)
             {
                 foreach (Block block in matchedBlocks)
                 {
@@ -383,7 +447,7 @@ public class GameManager : MonoBehaviour
 
                 ChangeState(GameState.ShiftBlocks);
             }
-            else if(matchedBlocks.Count >= 2 && !isTutorialCompleted)
+            else if(matchedBlocks.Count >= 2 && !DataManager.Instance.tutorial)
             {
                 foreach (Block block in matchedBlocks)
                 {
@@ -403,11 +467,11 @@ public class GameManager : MonoBehaviour
 
                 SpawnMatchBlock(matchedBlocks, matchedBlocks[matchedBlocks.Count - 1].occupiedNode);
 
-                if (!isFirstTutorialCompleted)
+                if (tutorialNumber == 1)
                 {
                     if (matchedBlocks.Count == 5)
                     {
-                        isFirstTutorialCompleted = true;
+                        tutorialNumber++;
                         StartSecondTutorial();
                     }
                     else if (matchedBlocks.Count < 5)
@@ -415,18 +479,31 @@ public class GameManager : MonoBehaviour
                         ResetFirstTutorial();
                     }
                 }
-                else
+                else if(tutorialNumber == 2)
                 {
                     if (matchedBlocks.Count == 5)
                     {
-                        isTutorialCompleted = true;
-                        tutorialNodes.Clear();
-                        ResetWorld();
-                        Invoke(nameof(GenerateGame), 1f);
+                        tutorialNumber++;
+                        StartThirdTutorial();
                     }
                     else if (matchedBlocks.Count < 5)
                     {
                         ResetSecondTutorial();
+                    }
+                }
+                else if(tutorialNumber == 3)
+                {
+                    if (matchedBlocks.Count == 10)
+                    {
+                        DataManager.Instance.tutorial = true;
+                        gamePlayButtons.SetActive(true);
+                        tutorialNodes.Clear();
+                        ResetWorld();
+                        Invoke(nameof(ChangeGameStateToGenerateGame), 1f);
+                    }
+                    else if (matchedBlocks.Count < 10)
+                    {
+                        ResetThirdTutorial();
                     }
                 }
                 matchedBlocks.Clear();
@@ -452,7 +529,7 @@ public class GameManager : MonoBehaviour
 
         foreach (Block aroundBlock in aroundBlocks)
         {
-            if (closestBlock.value == aroundBlock.value && !IsInTheLine(aroundBlock))
+            if ((block.value == aroundBlock.value && !IsInTheLine(aroundBlock) )|| (CalculateMatchValue(matchedBlocks) == aroundBlock.value && !IsInTheLine(aroundBlock)))
             {
                 matchableBlocks.Add(aroundBlock);
             }
@@ -477,23 +554,31 @@ public class GameManager : MonoBehaviour
         int matchValue = CalculateMatchValue(matchedBlocks);
         SpawnSpecificBlock(spawnNode, GetSpecificBlockTypeWithValue(matchValue));
         emptyNodes.Remove(spawnNode);
-        AddScore(matchValue);
-        if(isTutorialCompleted)
+        if(DataManager.Instance.tutorial)
         {
             UpdateSlider();
+            AddScore(matchValue);
         }
     }
 
     private void AddScore(int value)
     {
-        score += value * scoreMultiplier;
-        if(score < 1000)
+        DataManager.Instance.highScore += value * DataManager.Instance.scoreMultiplier;
+        UpdateScoreText();
+    }
+    private void UpdateScoreText()
+    {
+        if (DataManager.Instance.highScore < 1000)
         {
-            scoreText.text = score.ToString();
+            scoreText.text = DataManager.Instance.highScore.ToString();
         }
-        else if (score < 1000000)
+        else if (DataManager.Instance.highScore < 1000000)
         {
-            scoreText.text = $"{MathF.Round(score / 1000,1)}K";
+            scoreText.text = $"{MathF.Round((float)DataManager.Instance.highScore / 1000, 1)}K";
+        }
+        else if (DataManager.Instance.highScore < 1000000000)
+        {
+            scoreText.text = $"{MathF.Round((float)DataManager.Instance.highScore / 1000000, 1)}M";
         }
     }
 
@@ -519,29 +604,44 @@ public class GameManager : MonoBehaviour
 
     private void LevelUp()
     {
-        currentLevel++;
-        currentLevelText.text = currentLevel.ToString();
-        nextLevelText.text = (currentLevel + 1).ToString();
+        DataManager.Instance.currentLevel++;
+        currentLevelText.text = DataManager.Instance.currentLevel.ToString();
+        nextLevelText.text = (DataManager.Instance.currentLevel + 1).ToString();
         slider.value = slider.minValue;
+    }
+    private void UpdateLevelSlider()
+    {
+        currentLevelText.text = DataManager.Instance.currentLevel.ToString();
+        nextLevelText.text = (DataManager.Instance.currentLevel + 1).ToString();
+        slider.value = DataManager.Instance.sliderValue;
     }
 
     private int CalculateMatchValue(List<Block> matchedBlocks)
     {
         int matchValue = 0;
-        if (matchedBlocks.Count <= 3)
+        if (matchedBlocks.Count < 2) return matchedBlocks[0].value;
+
+        foreach (Block block in matchedBlocks)
         {
-            matchValue = matchedBlocks[0].value * 2;
-        }
-        else if (matchedBlocks.Count <= 7 && matchedBlocks.Count > 3)
-        {
-            matchValue = matchedBlocks[0].value * 4;
-        }
-        else if (matchedBlocks.Count <= 15 && matchedBlocks.Count > 7)
-        {
-            matchValue = matchedBlocks[0].value * 8;
+            matchValue += block.value;
         }
 
-        return matchValue;
+        List<int> valueList = new List<int>();
+        foreach (BlockType blockType in types)
+        {
+            valueList.Add(blockType.value);
+            if (blockType.value == matchValue)
+            {
+                return matchValue;
+            }
+        }
+
+        valueList.Add((int)matchValue);
+
+        valueList = valueList.OrderBy(n => n).ToList();
+        int matchValueIndex = valueList.FindIndex(n => n == matchValue);
+
+        return valueList[matchValueIndex - 1];
     }
     private void Shift()
     {
@@ -645,21 +745,72 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseScoreMultiplier()
     {
-        scoreMultiplier++;
-        scoreMultiplierText.text = $"x{scoreMultiplier}";
+        DataManager.Instance.scoreMultiplier++;
+        UpdateScoreMultiplierText();
+    }
+    private void UpdateScoreMultiplierText()
+    {
+        scoreMultiplierText.text = $"x{DataManager.Instance.scoreMultiplier}";
     }
 
     public void DoubleAllBlocksButton()
     {
         foreach (Block block in blocks)
         {
-            block._trasform.DORotate(new Vector3(360,0,0), 1, RotateMode.FastBeyond360).OnComplete(() =>
+            block._trasform.GetChild(1).gameObject.SetActive(false);
+            block._trasform.DORotate(new Vector3(0,360,0), 1, RotateMode.FastBeyond360).OnComplete(() =>
             {
                 block.Init(GetSpecificBlockTypeWithValue(block.value * 2));
+                block._trasform.GetChild(1).gameObject.SetActive(true);
             });
-            //block.Init(GetSpecificBlockTypeWithValue(block.value * 2));
         }
     }
+    public void IncreaseMinMaxSpawnValue()
+    {
+        DataManager.Instance.minSpawnValue *= 2;
+        DataManager.Instance.maxSpawnValue *= 2;
+    }
+
+    private void UpdateGame()
+    {
+        DataManager.Instance.Load();
+        UpdateScoreText();
+        UpdateScoreMultiplierText();
+        UpdateLevelSlider();
+    }
+    private void SaveBlockValues()
+    {
+        if(DataManager.Instance.tutorial)
+        {
+            var orderedBlocks = blocks.OrderBy(a => a.Pos.x).ThenBy(a => a.Pos.y).ToList();
+            for (int i = 0; i < orderedBlocks.Count; i++)
+            {
+                DataManager.Instance.values[i] = orderedBlocks[i].value;
+            }
+            DataManager.Instance.sliderValue = (int)slider.value;
+            DataManager.Instance.Save();
+        }
+    }
+    private void OnApplicationPause(bool pause)
+    {
+        if(pause)
+        {
+            SaveBlockValues();
+        }
+    }
+    private void OnApplicationFocus(bool focus)
+    {
+        if(!focus)
+        {
+            SaveBlockValues();
+        }
+
+    }
+    private void OnApplicationQuit()
+    {
+        SaveBlockValues();
+    }
+
 }
 
 [Serializable]
@@ -678,4 +829,10 @@ public enum GameState
     ShiftBlocks,
     FillNodes,
     MainMenu,
+    LoadGame
+}
+public enum MatchType
+{
+    Normal,
+    Complex
 }

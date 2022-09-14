@@ -5,6 +5,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameManager gameManager;
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject gameMenu;
+    [SerializeField] GameObject gamePlayButtons;
 
     public void TapToPlay()
     {
@@ -12,6 +13,10 @@ public class MenuManager : MonoBehaviour
         mainMenu.SetActive(false);
         gameMenu.SetActive(true);
         gameManager._time = Time.time;
+        if(DataManager.Instance.tutorial)
+        {
+            gamePlayButtons.SetActive(true);
+        }
     }
 
     public void PauseButton()

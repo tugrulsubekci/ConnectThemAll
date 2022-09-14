@@ -9,9 +9,9 @@ public class Line : MonoBehaviour
         lineRenderer.SetPosition(1,endPoint);
     }
 
-    public void ChangeColor(Color newColor)
+    public void ChangeColor(Color startColor,Color endColor)
     {
-        lineRenderer.startColor = newColor;
-        lineRenderer.endColor = newColor;
+        lineRenderer.startColor = startColor;
+        lineRenderer.endColor = endColor;
     }
 }
