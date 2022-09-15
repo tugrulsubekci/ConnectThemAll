@@ -36,8 +36,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject noMore;
     [SerializeField] private GameObject sortPopup;
     [SerializeField] private GameObject multiplierPopup;
-    [SerializeField] private GameObject DoublePopup;
+    [SerializeField] private GameObject _doublePopup;
     [SerializeField] private GameObject spawnValuePopup;
+    [SerializeField] private GameObject levelPopup;
 
     private List<Node> nodes = new List<Node>();
     private List<Block> blocks = new List<Block>();
@@ -626,34 +627,26 @@ public class GameManager : MonoBehaviour
         if (DataManager.Instance.currentLevel == 3)
         {
             sortPopup.SetActive(true);
-            GameObject sortButton = gamePlayButtons.transform.GetChild(0).gameObject;
-            sortButton.transform.GetChild(0).gameObject.SetActive(false);
-            sortButton.GetComponent<Image>().enabled = true;
-            sortButton.GetComponent<Button>().interactable = true;
+            ActivateButton(0);
         }
         else if (DataManager.Instance.currentLevel == 5)
         {
             spawnValuePopup.SetActive(true);
-            GameObject spawnValueButton = gamePlayButtons.transform.GetChild(1).gameObject;
-            spawnValueButton.transform.GetChild(0).gameObject.SetActive(false);
-            spawnValueButton.GetComponent<Image>().enabled = true;
-            spawnValueButton.GetComponent<Button>().interactable = true;
+            ActivateButton(1);
         }
         else if (DataManager.Instance.currentLevel == 7)
         {
-            DoublePopup.SetActive(true);
-            GameObject doubleButton = gamePlayButtons.transform.GetChild(2).gameObject;
-            doubleButton.transform.GetChild(0).gameObject.SetActive(false);
-            doubleButton.GetComponent<Image>().enabled = true;
-            doubleButton.GetComponent<Button>().interactable = true;
+            _doublePopup.SetActive(true);
+            ActivateButton(2);
         }
         else if (DataManager.Instance.currentLevel == 9)
         {
             multiplierPopup.SetActive(true);
-            GameObject multiplierButton = gamePlayButtons.transform.GetChild(3).gameObject;
-            multiplierButton.transform.GetChild(0).gameObject.SetActive(false);
-            multiplierButton.GetComponent<Image>().enabled = true;
-            multiplierButton.GetComponent<Button>().interactable = true;
+            ActivateButton(3);
+        }
+        else
+        {
+            levelPopup.SetActive(true);
         }
     }
 
@@ -793,7 +786,7 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseScoreMultiplier()
     {
-        Instantiate(scoreMultiplierParticle,gamePlayButtons.transform.GetChild(1).position,Quaternion.identity);
+        Instantiate(scoreMultiplierParticle,gamePlayButtons.transform.GetChild(3).position,Quaternion.identity);
         DataManager.Instance.scoreMultiplier++;
         UpdateScoreMultiplierText();
     }
@@ -828,7 +821,41 @@ public class GameManager : MonoBehaviour
         UpdateScoreText();
         UpdateScoreMultiplierText();
         UpdateLevelSlider();
+        UpdateGameplayButtons();
     }
+
+    private void UpdateGameplayButtons()
+    {
+        if (DataManager.Instance.currentLevel >= 3)
+        {
+            Destroy(sortPopup);
+            ActivateButton(0);
+        }
+        if (DataManager.Instance.currentLevel >= 5)
+        {
+            Destroy(spawnValuePopup);
+            ActivateButton(1);
+        }
+        if (DataManager.Instance.currentLevel >= 7)
+        {
+            Destroy(_doublePopup);
+            ActivateButton(2);
+        }
+        if (DataManager.Instance.currentLevel >= 9)
+        {
+            Destroy(_doublePopup);
+            ActivateButton(3);
+        }
+    }
+
+    private void ActivateButton(int childIndex)
+    {
+        GameObject button = gamePlayButtons.transform.GetChild(childIndex).gameObject;
+        button.transform.GetChild(0).gameObject.SetActive(false);
+        button.GetComponent<Image>().enabled = true;
+        button.GetComponent<Button>().interactable = true;
+    }
+
     private void SaveBlockValues()
     {
         if(DataManager.Instance.tutorial)
@@ -861,7 +888,6 @@ public class GameManager : MonoBehaviour
     {
         SaveBlockValues();
     }
-
 }
 
 [Serializable]
@@ -870,6 +896,7 @@ public struct BlockType
     public int value;
     public Color color;
     public string valueString;
+    public bool flat;
 }
 
 public enum GameState

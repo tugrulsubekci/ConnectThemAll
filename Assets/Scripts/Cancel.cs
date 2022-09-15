@@ -11,6 +11,6 @@ public class Cancel : MonoBehaviour
     }
     private void ClosePopup()
     {
-        transform.parent.gameObject.SetActive(false);
+        Destroy(transform.parent.gameObject);
     }
 }

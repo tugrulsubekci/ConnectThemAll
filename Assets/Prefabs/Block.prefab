@@ -133,6 +133,8 @@ MonoBehaviour:
   value: 0
   _spriteRenderer: {fileID: 4930679107541609981}
   _valueText: {fileID: 5543943562128608196}
+  flatSprite: {fileID: -2413806693520163455, guid: 9e0696580d582ae4794b03e1a8ff4a8f, type: 3}
+  otherSprite: {fileID: 21300000, guid: 9b1d15e1e83005e4a9d68d4dd820ca73, type: 3}
   occupiedNode: {fileID: 0}
 --- !u!1 &8466718262250993937
 GameObject:
