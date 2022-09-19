@@ -959,6 +959,7 @@ GameObject:
   - component: {fileID: 7032443895176836198}
   - component: {fileID: 7032443895176836199}
   - component: {fileID: 7032443895176836184}
+  - component: {fileID: 1502421251}
   m_Layer: 5
   m_Name: DoubleButton
   m_TagString: Untagged
@@ -1068,19 +1069,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7032443895176836197}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: DoubleAllBlocksButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!223 &7032443895176836199
 Canvas:
   m_ObjectHideFlags: 0
@@ -1119,6 +1108,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1502421251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7032443895176836186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebee9fb5f526416458b8ebb0a1cc2f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RewardedAd: {fileID: 0}
+  _AdType: 1
 --- !u!1 &7032443895299832475
 GameObject:
   m_ObjectHideFlags: 0
@@ -4529,6 +4532,7 @@ GameObject:
   - component: {fileID: 7032443896342579303}
   - component: {fileID: 7032443896342579288}
   - component: {fileID: 7032443896342579289}
+  - component: {fileID: 1041869649}
   m_Layer: 5
   m_Name: MultiplierButton
   m_TagString: Untagged
@@ -4638,19 +4642,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7032443896342579302}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: IncreaseScoreMultiplier
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!223 &7032443896342579288
 Canvas:
   m_ObjectHideFlags: 0
@@ -4689,6 +4681,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1041869649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7032443896342579291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebee9fb5f526416458b8ebb0a1cc2f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RewardedAd: {fileID: 0}
+  _AdType: 3
 --- !u!1 &7032443896351926195
 GameObject:
   m_ObjectHideFlags: 0
@@ -5087,6 +5093,7 @@ GameObject:
   - component: {fileID: 7032443896432267512}
   - component: {fileID: 7032443896432267513}
   - component: {fileID: 7032443896432267514}
+  - component: {fileID: 1204868275}
   m_Layer: 5
   m_Name: SpawnValueButton
   m_TagString: Untagged
@@ -5196,19 +5203,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7032443896432267399}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: IncreaseMinMaxSpawnValue
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!223 &7032443896432267513
 Canvas:
   m_ObjectHideFlags: 0
@@ -5247,6 +5242,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1204868275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7032443896432267516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebee9fb5f526416458b8ebb0a1cc2f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RewardedAd: {fileID: 0}
+  _AdType: 2
 --- !u!1 &7032443896481217965
 GameObject:
   m_ObjectHideFlags: 0
@@ -5559,6 +5568,7 @@ GameObject:
   - component: {fileID: 7032443896507508461}
   - component: {fileID: 7032443896507508462}
   - component: {fileID: 7032443896507508463}
+  - component: {fileID: 867874992}
   m_Layer: 5
   m_Name: SortButton
   m_TagString: Untagged
@@ -5668,19 +5678,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7032443896507508460}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: SortBlocks
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!223 &7032443896507508462
 Canvas:
   m_ObjectHideFlags: 0
@@ -5719,6 +5717,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &867874992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7032443896507508449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebee9fb5f526416458b8ebb0a1cc2f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RewardedAd: {fileID: 0}
+  _AdType: 0
 --- !u!1 &7032443896568349716
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,7 +18,7 @@ public class DataManager : MonoBehaviour
     {
         Instance = this;
 #if UNITY_EDITOR
-        // File.Delete(Application.persistentDataPath + "/ctadata.json"); // This line can be activated, If you want to delete save file.
+        File.Delete(Application.persistentDataPath + "/ctadata.json"); // This line can be activated, If you want to delete save file.
 #endif
     }
 

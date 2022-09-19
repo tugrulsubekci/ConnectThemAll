@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _doublePopup;
     [SerializeField] private GameObject spawnValuePopup;
     [SerializeField] private GameObject levelPopup;
+    [SerializeField] private InterstitialAdvertisement InterstitialAd;
 
     private List<Node> nodes = new List<Node>();
     private List<Block> blocks = new List<Block>();
@@ -345,6 +346,8 @@ public class GameManager : MonoBehaviour
                 closestBlock.transform.localScale *= scaleMultiplier;
                 FindMatchableBlocks(closestBlock);
                 ActivateShowBlock();
+
+                Vibrator.Vibrate(10);
             }
             else
             {
@@ -370,6 +373,8 @@ public class GameManager : MonoBehaviour
                     closestBlock.transform.localScale *= scaleMultiplier;
                     FindMatchableBlocks(closestBlock);
                     ActivateShowBlock();
+
+                    Vibrator.Vibrate(10);
                 }
                 else
                 {
@@ -405,6 +410,8 @@ public class GameManager : MonoBehaviour
 
                         matchableBlocks.Clear();
                         FindMatchableBlocks(selectedBlock);
+
+                        Vibrator.Vibrate(10);
                         break;
                     }
                 }
@@ -619,6 +626,7 @@ public class GameManager : MonoBehaviour
         currentLevelText.text = DataManager.Instance.currentLevel.ToString();
         nextLevelText.text = (DataManager.Instance.currentLevel + 1).ToString();
         slider.value = slider.minValue;
+        InterstitialAd.ShowAd();
         CheckLevel();
     }
 
@@ -682,7 +690,7 @@ public class GameManager : MonoBehaviour
         valueList = valueList.OrderBy(n => n).ToList();
         int matchValueIndex = valueList.FindIndex(n => n == matchValue);
 
-        return valueList[matchValueIndex - 1];
+        return valueList[matchValueIndex + 1];
     }
     private void Shift()
     {
@@ -795,7 +803,7 @@ public class GameManager : MonoBehaviour
         scoreMultiplierText.text = $"x{DataManager.Instance.scoreMultiplier}";
     }
 
-    public void DoubleAllBlocksButton()
+    public void DoubleAllBlocks()
     {
         foreach (Block block in blocks)
         {
