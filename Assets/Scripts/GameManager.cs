@@ -6,6 +6,7 @@ using DG.Tweening;
 using Random = UnityEngine.Random;
 using TMPro;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class GameManager : MonoBehaviour
 {
@@ -38,8 +39,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject multiplierPopup;
     [SerializeField] private GameObject _doublePopup;
     [SerializeField] private GameObject spawnValuePopup;
-    [SerializeField] private GameObject levelPopup;
     [SerializeField] private InterstitialAdvertisement InterstitialAd;
+    [SerializeField] private AudioManager audioManager;
 
     private List<Node> nodes = new List<Node>();
     private List<Block> blocks = new List<Block>();
@@ -343,6 +344,7 @@ public class GameManager : MonoBehaviour
                 ActivateShowBlock();
 
                 Vibrator.Vibrate(10);
+                audioManager.Play("Select");
             }
             else
             {
@@ -370,6 +372,7 @@ public class GameManager : MonoBehaviour
                     ActivateShowBlock();
 
                     Vibrator.Vibrate(10);
+                    audioManager.Play("Select");
                 }
                 else
                 {
@@ -407,6 +410,7 @@ public class GameManager : MonoBehaviour
                         FindMatchableBlocks(selectedBlock);
 
                         Vibrator.Vibrate(10);
+                        audioManager.Play("Select");
                         break;
                     }
                 }
@@ -568,6 +572,7 @@ public class GameManager : MonoBehaviour
             UpdateSlider();
             AddScore(matchValue);
         }
+        audioManager.Play("Spawn");
     }
 
     private void AddScore(int value)
@@ -652,7 +657,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            levelPopup.SetActive(true);
+            audioManager.Play("Win");
         }
     }
 
@@ -860,6 +865,7 @@ public class GameManager : MonoBehaviour
         button.transform.GetChild(0).gameObject.SetActive(false);
         button.GetComponent<Image>().enabled = true;
         button.GetComponent<Button>().interactable = true;
+        audioManager.Play("Unlock");
     }
 
     private void SaveBlockValues()
@@ -875,6 +881,7 @@ public class GameManager : MonoBehaviour
             DataManager.Instance.Save();
         }
     }
+
     private void OnApplicationPause(bool pause)
     {
         if(pause)

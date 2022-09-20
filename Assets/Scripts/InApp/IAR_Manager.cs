@@ -10,10 +10,13 @@ public class IAR_Manager : MonoBehaviour
 
     public void RateUsButton()
     {
+        FindObjectOfType<AudioManager>().Play("Click");
         StartCoroutine(nameof(RequestAndLaunchReview));
     }
     private IEnumerator RequestAndLaunchReview()
     {
+        _reviewManager = new ReviewManager();
+
         var requestFlowOperation = _reviewManager.RequestReviewFlow();
         yield return requestFlowOperation;
         if (requestFlowOperation.Error != ReviewErrorCode.NoError)
@@ -21,6 +24,7 @@ public class IAR_Manager : MonoBehaviour
             Application.OpenURL(url);
             yield break;
         }
+
         _playReviewInfo = requestFlowOperation.GetResult();
 
         var launchFlowOperation = _reviewManager.LaunchReviewFlow(_playReviewInfo);

@@ -13,6 +13,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject settingsButton;
     [SerializeField] private GameObject tapToPlay;
     [SerializeField] private GameObject infoPopup;
+    [SerializeField] private AudioManager audioManager;
 
     private float rateUsPosX;
     private float noAdsPosX;
@@ -46,6 +47,8 @@ public class MenuManager : MonoBehaviour
             }
             gameManager._time = Time.time;
         });
+
+        audioManager.Play("Click");
     }
 
     public void PauseButton()
@@ -60,10 +63,14 @@ public class MenuManager : MonoBehaviour
         settingsButton.transform.DOMoveX(settingsPosX, 1);
         gameTitle.transform.DOMoveY(gameTitlePosY, 1);
         tapToPlay.transform.DOMoveY(tapToPlayPosY, 1);
+
+        audioManager.Play("Click");
     }
 
     public void InfoButton()
     {
         infoPopup.SetActive(true);
+
+        audioManager.Play("Click");
     }
 }

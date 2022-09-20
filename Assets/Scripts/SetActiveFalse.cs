@@ -12,5 +12,6 @@ public class SetActiveFalse : MonoBehaviour
     private void ClosePopup()
     {
         transform.parent.gameObject.SetActive(false);
+        FindObjectOfType<AudioManager>().Play("Click");
     }
 }

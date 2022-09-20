@@ -15,5 +15,6 @@ public class RewardedButton : MonoBehaviour
     private void DefineAdType()
     {
         RewardedAd.AdType = _AdType;
+        FindObjectOfType<AudioManager>().Play("Click");
     }
 }

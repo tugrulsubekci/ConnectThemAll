@@ -14,6 +14,7 @@ public class DataManager : MonoBehaviour
     public int currentLevel = 1;
     public int sliderValue;
     public bool noAds;
+    public bool isMusicOn = true;
 
     void Awake()
     {
@@ -35,6 +36,7 @@ public class DataManager : MonoBehaviour
         public int currentLevel;
         public int sliderValue;
         public bool noAds;
+        public bool isMusicOn;
 
     }
 
@@ -50,6 +52,7 @@ public class DataManager : MonoBehaviour
         data.currentLevel = currentLevel;
         data.sliderValue = sliderValue;
         data.noAds = noAds;
+        data.isMusicOn = isMusicOn;
 
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(Application.persistentDataPath + "/ctadata.json", json);
@@ -70,7 +73,7 @@ public class DataManager : MonoBehaviour
             currentLevel = data.currentLevel;
             sliderValue = data.sliderValue;
             noAds = data.noAds;
-
+            isMusicOn = data.isMusicOn;
         }
     }
 }

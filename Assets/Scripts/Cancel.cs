@@ -12,5 +12,6 @@ public class Cancel : MonoBehaviour
     private void ClosePopup()
     {
         Destroy(transform.parent.gameObject);
+        FindObjectOfType<AudioManager>().Play("Click");
     }
 }
