@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject gameTitle;
     [SerializeField] private GameObject settingsButton;
     [SerializeField] private GameObject tapToPlay;
+    [SerializeField] private GameObject infoPopup;
 
     private float rateUsPosX;
     private float noAdsPosX;
@@ -59,5 +60,10 @@ public class MenuManager : MonoBehaviour
         settingsButton.transform.DOMoveX(settingsPosX, 1);
         gameTitle.transform.DOMoveY(gameTitlePosY, 1);
         tapToPlay.transform.DOMoveY(tapToPlayPosY, 1);
+    }
+
+    public void InfoButton()
+    {
+        infoPopup.SetActive(true);
     }
 }

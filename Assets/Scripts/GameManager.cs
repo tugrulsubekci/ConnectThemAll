@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Node nodePrefab;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private SpriteRenderer boardPrefab;
-    [SerializeField] private List<BlockType> types;
+    [SerializeField] public List<BlockType> types;
     [SerializeField] private Transform nodeParent;
     [SerializeField] private Transform blockParent;
     [SerializeField] private Transform lineParent;
