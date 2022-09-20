@@ -204,22 +204,17 @@ public class GameManager : MonoBehaviour
 
         tutorialNodes.Clear();
 
-        tutorialNodes = nodes.FindAll(n => n.Pos.y == -1 || n.Pos.y == 0);
+        tutorialNodes = nodes.FindAll(n => n.Pos.y == -1);
 
         Invoke(nameof(SpawnThirdTutorialBlocks), 1.25f);
     }
     private void SpawnThirdTutorialBlocks()
     {
-        SpawnSpecificBlock(tutorialNodes[0], GetSpecificBlockTypeWithValue(64));
+        SpawnSpecificBlock(tutorialNodes[0], GetSpecificBlockTypeWithValue(2));
         SpawnSpecificBlock(tutorialNodes[1], GetSpecificBlockTypeWithValue(2));
-        SpawnSpecificBlock(tutorialNodes[2], GetSpecificBlockTypeWithValue(32));
-        SpawnSpecificBlock(tutorialNodes[3], GetSpecificBlockTypeWithValue(2));
-        SpawnSpecificBlock(tutorialNodes[4], GetSpecificBlockTypeWithValue(32));
-        SpawnSpecificBlock(tutorialNodes[5], GetSpecificBlockTypeWithValue(2));
-        SpawnSpecificBlock(tutorialNodes[6], GetSpecificBlockTypeWithValue(8));
-        SpawnSpecificBlock(tutorialNodes[7], GetSpecificBlockTypeWithValue(2));
-        SpawnSpecificBlock(tutorialNodes[8], GetSpecificBlockTypeWithValue(8));
-        SpawnSpecificBlock(tutorialNodes[9], GetSpecificBlockTypeWithValue(8));
+        SpawnSpecificBlock(tutorialNodes[2], GetSpecificBlockTypeWithValue(4));
+        SpawnSpecificBlock(tutorialNodes[3], GetSpecificBlockTypeWithValue(4));
+        SpawnSpecificBlock(tutorialNodes[4], GetSpecificBlockTypeWithValue(4));
 
         tap.PlayTapAnimation(TutorialNumber.Third);
 
@@ -507,7 +502,7 @@ public class GameManager : MonoBehaviour
                 }
                 else if(tutorialNumber == 3)
                 {
-                    if (matchedBlocks.Count == 10)
+                    if (matchedBlocks.Count == 5)
                     {
                         DataManager.Instance.tutorial = true;
                         gamePlayButtons.SetActive(true);
@@ -515,7 +510,7 @@ public class GameManager : MonoBehaviour
                         ResetWorld();
                         Invoke(nameof(ChangeGameStateToGenerateGame), 1f);
                     }
-                    else if (matchedBlocks.Count < 10)
+                    else if (matchedBlocks.Count < 5)
                     {
                         ResetThirdTutorial();
                     }
@@ -626,7 +621,10 @@ public class GameManager : MonoBehaviour
         currentLevelText.text = DataManager.Instance.currentLevel.ToString();
         nextLevelText.text = (DataManager.Instance.currentLevel + 1).ToString();
         slider.value = slider.minValue;
-        InterstitialAd.ShowAd();
+        if(!DataManager.Instance.noAds)
+        {
+            InterstitialAd.ShowAd();
+        }
         CheckLevel();
     }
 
@@ -856,7 +854,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ActivateButton(int childIndex)
+    public void ActivateButton(int childIndex)
     {
         GameObject button = gamePlayButtons.transform.GetChild(childIndex).gameObject;
         button.transform.GetChild(0).gameObject.SetActive(false);

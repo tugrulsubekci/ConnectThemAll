@@ -498,6 +498,7 @@ MonoBehaviour:
   maxSpawnValue: 64
   currentLevel: 1
   sliderValue: 0
+  noAds: 0
 --- !u!1 &1015792277 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7032443895141360594, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}
@@ -684,7 +685,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _androidGameId: 4936323
   _iOSGameId: 4936322
-  _testMode: 1
   InterstitialAd: {fileID: 1670423153}
   RewardedAd: {fileID: 1670423154}
   BannerAd: {fileID: 1670423155}
@@ -1033,6 +1033,10 @@ PrefabInstance:
       propertyPath: RewardedAd
       value: 
       objectReference: {fileID: 1670423154}
+    - target: {fileID: 4062457949705477612, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}
+      propertyPath: productId
+      value: com.tworulegames.connectthemall.noadvertisement
+      objectReference: {fileID: 0}
     - target: {fileID: 7032443895449329008, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}
       propertyPath: m_Pivot.x
       value: 0

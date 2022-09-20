@@ -52,10 +52,22 @@ public class RewardedAdvertisement : MonoBehaviour, IUnityAdsLoadListener, IUnit
         if (adUnitId.Equals(_adUnitId))
         {
             // Enable the button for users to click:
-            sortBtn.interactable = true;
-            spawnValueBtn.interactable = true;
-            _doubleBtn.interactable = true;
-            multiplierBtn.interactable = true;
+            if (DataManager.Instance.currentLevel >= 3)
+            {
+                sortBtn.interactable = true;
+            }
+            if (DataManager.Instance.currentLevel >= 5)
+            {
+                spawnValueBtn.interactable = true;
+            }
+            if (DataManager.Instance.currentLevel >= 7)
+            {
+                _doubleBtn.interactable = true;
+            }
+            if (DataManager.Instance.currentLevel >= 9)
+            {
+                multiplierBtn.interactable = true;
+            }
         }
     }
 

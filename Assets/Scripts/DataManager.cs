@@ -13,6 +13,7 @@ public class DataManager : MonoBehaviour
     public int maxSpawnValue = 64;
     public int currentLevel = 1;
     public int sliderValue;
+    public bool noAds;
 
     void Awake()
     {
@@ -33,6 +34,7 @@ public class DataManager : MonoBehaviour
         public int maxSpawnValue;
         public int currentLevel;
         public int sliderValue;
+        public bool noAds;
 
     }
 
@@ -47,6 +49,7 @@ public class DataManager : MonoBehaviour
         data.maxSpawnValue = maxSpawnValue;
         data.currentLevel = currentLevel;
         data.sliderValue = sliderValue;
+        data.noAds = noAds;
 
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(Application.persistentDataPath + "/ctadata.json", json);
@@ -66,6 +69,7 @@ public class DataManager : MonoBehaviour
             maxSpawnValue = data.maxSpawnValue;
             currentLevel = data.currentLevel;
             sliderValue = data.sliderValue;
+            noAds = data.noAds;
 
         }
     }
