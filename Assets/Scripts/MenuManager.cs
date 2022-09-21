@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject tapToPlay;
     [SerializeField] private GameObject infoPopup;
     [SerializeField] private AudioManager audioManager;
+    [SerializeField] private GameObject settingsMenu;
+    [SerializeField] private GameObject soundOff;
+    [SerializeField] private GameObject vibrationOff;
+    [SerializeField] private GameObject soundOn;
+    [SerializeField] private GameObject vibrationOn;
 
     private float rateUsPosX;
     private float noAdsPosX;
@@ -72,5 +78,77 @@ public class MenuManager : MonoBehaviour
         infoPopup.SetActive(true);
 
         audioManager.Play("Click");
+    }
+
+    public void SettingsButton()
+    {
+        audioManager.Play("Click");
+        if (!settingsMenu.activeInHierarchy)
+        {
+            settingsMenu.SetActive(true);
+        }
+        else
+        {
+            settingsMenu.SetActive(false);
+        }
+    }
+
+    public void MuteButton()
+    {
+        audioManager.Play("Click");
+        if (DataManager.Instance.isMusicOn)
+        {
+            DataManager.Instance.isMusicOn = false;
+            soundOff.SetActive(true);
+            soundOn.SetActive(false);
+        }
+        else
+        {
+            DataManager.Instance.isMusicOn = true;
+            soundOff.SetActive(false);
+            soundOn.SetActive(true);
+        }
+    }
+
+    public void VibrationButton()
+    {
+        audioManager.Play("Click");
+        if (DataManager.Instance.isVibrationOn)
+        {
+            DataManager.Instance.isVibrationOn = false;
+            vibrationOn.SetActive(false);
+            vibrationOff.SetActive(true);
+        }
+        else
+        {
+            DataManager.Instance.isVibrationOn = true;
+            vibrationOn.SetActive(true);
+            vibrationOff.SetActive(false);
+        }
+    }
+
+    public void UpdateSettings()
+    {
+        if (DataManager.Instance.isVibrationOn)
+        {
+            vibrationOn.SetActive(true);
+            vibrationOff.SetActive(false);
+        }
+        else
+        {
+            vibrationOn.SetActive(false);
+            vibrationOff.SetActive(true);
+        }
+
+        if (DataManager.Instance.isMusicOn)
+        {
+            soundOff.SetActive(false);
+            soundOn.SetActive(true);
+        }
+        else
+        {
+            soundOff.SetActive(true);
+            soundOn.SetActive(false);
+        }
     }
 }

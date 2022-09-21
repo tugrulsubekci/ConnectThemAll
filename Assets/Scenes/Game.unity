@@ -505,6 +505,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &707189533 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7032443895449329023, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}
+  m_PrefabInstance: {fileID: 7032443895603011911}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4143416b52bc0e0499db0a0b6d5fc048, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &867874989 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7032443896507508461, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}
@@ -570,6 +581,7 @@ MonoBehaviour:
   sliderValue: 0
   noAds: 0
   isMusicOn: 1
+  isVibrationOn: 1
 --- !u!1 &971255809
 GameObject:
   m_ObjectHideFlags: 1
@@ -1110,6 +1122,7 @@ MonoBehaviour:
   spawnValuePopup: {fileID: 1268609005}
   InterstitialAd: {fileID: 1670423153}
   audioManager: {fileID: 365208368}
+  menuManager: {fileID: 707189533}
 --- !u!114 &1908445094 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7032443896429326049, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}

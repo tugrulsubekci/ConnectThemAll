@@ -15,12 +15,13 @@ public class DataManager : MonoBehaviour
     public int sliderValue;
     public bool noAds;
     public bool isMusicOn = true;
+    public bool isVibrationOn = true;
 
     void Awake()
     {
         Instance = this;
 #if UNITY_EDITOR
-        File.Delete(Application.persistentDataPath + "/ctadata.json"); // This line can be activated, If you want to delete save file.
+        // File.Delete(Application.persistentDataPath + "/ctadata.json"); // This line can be activated, If you want to delete save file.
 #endif
     }
 
@@ -37,6 +38,7 @@ public class DataManager : MonoBehaviour
         public int sliderValue;
         public bool noAds;
         public bool isMusicOn;
+        public bool isVibrationOn;
 
     }
 
@@ -53,6 +55,7 @@ public class DataManager : MonoBehaviour
         data.sliderValue = sliderValue;
         data.noAds = noAds;
         data.isMusicOn = isMusicOn;
+        data.isVibrationOn = isVibrationOn;
 
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(Application.persistentDataPath + "/ctadata.json", json);
@@ -74,6 +77,7 @@ public class DataManager : MonoBehaviour
             sliderValue = data.sliderValue;
             noAds = data.noAds;
             isMusicOn = data.isMusicOn;
+            isVibrationOn = data.isVibrationOn;
         }
     }
 }

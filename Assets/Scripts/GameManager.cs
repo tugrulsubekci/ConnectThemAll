@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject spawnValuePopup;
     [SerializeField] private InterstitialAdvertisement InterstitialAd;
     [SerializeField] private AudioManager audioManager;
+    [SerializeField] private MenuManager menuManager;
 
     private List<Node> nodes = new List<Node>();
     private List<Block> blocks = new List<Block>();
@@ -351,7 +352,7 @@ public class GameManager : MonoBehaviour
                 FindMatchableBlocks(closestBlock);
                 ActivateShowBlock();
 
-                Vibrator.Vibrate(10);
+                if (DataManager.Instance.isVibrationOn) Vibrator.Vibrate(10);
                 audioManager.Play("Select");
             }
             else
@@ -379,7 +380,7 @@ public class GameManager : MonoBehaviour
                     FindMatchableBlocks(closestBlock);
                     ActivateShowBlock();
 
-                    Vibrator.Vibrate(10);
+                    if (DataManager.Instance.isVibrationOn) Vibrator.Vibrate(10);
                     audioManager.Play("Select");
                 }
                 else
@@ -417,7 +418,7 @@ public class GameManager : MonoBehaviour
                         matchableBlocks.Clear();
                         FindMatchableBlocks(selectedBlock);
 
-                        Vibrator.Vibrate(10);
+                        if (DataManager.Instance.isVibrationOn) Vibrator.Vibrate(10);
                         audioManager.Play("Select");
                         break;
                     }
@@ -841,6 +842,7 @@ public class GameManager : MonoBehaviour
         UpdateScoreMultiplierText();
         UpdateLevelSlider();
         UpdateGameplayButtons();
+        menuManager.UpdateSettings();
     }
 
     private void UpdateGameplayButtons()
