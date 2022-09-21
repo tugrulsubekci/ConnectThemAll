@@ -59,7 +59,15 @@ public class GameManager : MonoBehaviour
     private GameState _state;
     private Vector2 firstMousePos;
     private Vector2 mousePos;
-
+    private void Awake()
+    {
+#if UNITY_EDITOR
+        Debug.unityLogger.logEnabled = true;
+#else
+        Debug.unityLogger.logEnabled = false;
+#endif
+        Application.targetFrameRate = 30;
+    }
     private void Start()
     {
         UpdateGame();

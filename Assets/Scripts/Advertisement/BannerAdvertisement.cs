@@ -3,8 +3,6 @@ using UnityEngine.Advertisements;
 
 public class BannerAdvertisement: MonoBehaviour
 {
-    private BannerPosition _bannerPosition = BannerPosition.BOTTOM_CENTER;
-
     [SerializeField] string _androidAdUnitId = "Banner_Android";
     [SerializeField] string _iOSAdUnitId = "Banner_iOS";
     string _adUnitId = null; // This will remain null for unsupported platforms.
@@ -18,7 +16,7 @@ public class BannerAdvertisement: MonoBehaviour
         _adUnitId = _androidAdUnitId;
 #endif
         // Set the banner position:
-        Advertisement.Banner.SetPosition(_bannerPosition);
+        Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
     }
 
     // Implement a method to call when the Load Banner button is clicked:
@@ -39,7 +37,7 @@ public class BannerAdvertisement: MonoBehaviour
     void OnBannerLoaded()
     {
         Debug.Log("Banner loaded");
-
+        Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
         ShowBannerAd();
     }
 
