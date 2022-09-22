@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private int tutorialNumber = 1;
     public float _time;
     private float _passedTime;
+    private float billion = 1000000000;
+    private float million = 1000000;
 
     [SerializeField] private Slider slider;
     [SerializeField] private TextMeshProUGUI currentLevelText;
@@ -42,6 +44,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InterstitialAdvertisement InterstitialAd;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private MenuManager menuManager;
+    [SerializeField] private TextMeshProUGUI worldRankText;
 
     private List<Node> nodes = new List<Node>();
     private List<Block> blocks = new List<Block>();
@@ -588,10 +591,22 @@ public class GameManager : MonoBehaviour
     {
         DataManager.Instance.highScore += value * DataManager.Instance.scoreMultiplier;
         UpdateScoreText();
+        UpdateWorldRank();
     }
     private void UpdateScoreText()
     {
         scoreText.text = IntToString(DataManager.Instance.highScore);
+    }
+    private void UpdateWorldRank()
+    {
+        if(DataManager.Instance.highScore <= million)
+        {
+            worldRankText.text = Mathf.Floor((1.0f - DataManager.Instance.highScore / million) * 100.0f) + "%";
+        }
+        else if (DataManager.Instance.highScore > million)
+        {
+            worldRankText.text = Mathf.Floor((1.0f - DataManager.Instance.highScore / billion) * 100.0f) + "%";
+        }
     }
     private string IntToString(int value)
     {
@@ -843,6 +858,7 @@ public class GameManager : MonoBehaviour
         UpdateLevelSlider();
         UpdateGameplayButtons();
         menuManager.UpdateSettings();
+        UpdateWorldRank();
     }
 
     private void UpdateGameplayButtons()
@@ -850,32 +866,37 @@ public class GameManager : MonoBehaviour
         if (DataManager.Instance.currentLevel >= 3)
         {
             Destroy(sortPopup);
-            ActivateButton(0);
+            EnableButton(0);
         }
         if (DataManager.Instance.currentLevel >= 5)
         {
             Destroy(spawnValuePopup);
-            ActivateButton(1);
+            EnableButton(1);
         }
         if (DataManager.Instance.currentLevel >= 7)
         {
             Destroy(_doublePopup);
-            ActivateButton(2);
+            EnableButton(2);
         }
         if (DataManager.Instance.currentLevel >= 9)
         {
             Destroy(_doublePopup);
-            ActivateButton(3);
+            EnableButton(3);
         }
     }
 
-    public void ActivateButton(int childIndex)
+    private void ActivateButton(int childIndex)
+    {
+        EnableButton(childIndex);
+        audioManager.Play("Unlock");
+    }
+
+    private void EnableButton(int childIndex)
     {
         GameObject button = gamePlayButtons.transform.GetChild(childIndex).gameObject;
         button.transform.GetChild(0).gameObject.SetActive(false);
         button.GetComponent<Image>().enabled = true;
         button.GetComponent<Button>().interactable = true;
-        audioManager.Play("Unlock");
     }
 
     private void SaveBlockValues()

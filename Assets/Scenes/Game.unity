@@ -582,6 +582,50 @@ MonoBehaviour:
   noAds: 0
   isMusicOn: 1
   isVibrationOn: 1
+--- !u!1 &880310679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 880310680}
+  - component: {fileID: 880310681}
+  m_Layer: 0
+  m_Name: In App Update
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &880310680
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880310679}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &880310681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880310679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48c3ff420f206248b7d71c3ff4c9cfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &971255809
 GameObject:
   m_ObjectHideFlags: 1
@@ -903,6 +947,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _androidAdUnitId: Banner_Android
   _iOSAdUnitId: Banner_iOS
+--- !u!114 &1690716097 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1690716097, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}
+  m_PrefabInstance: {fileID: 7032443895603011911}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1813839442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,6 +1178,7 @@ MonoBehaviour:
   InterstitialAd: {fileID: 1670423153}
   audioManager: {fileID: 365208368}
   menuManager: {fileID: 707189533}
+  worldRankText: {fileID: 1690716097}
 --- !u!114 &1908445094 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7032443896429326049, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}
