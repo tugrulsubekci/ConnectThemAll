@@ -8,7 +8,7 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
     private bool _testMode = false;
     [SerializeField] InterstitialAdvertisement InterstitialAd;
     [SerializeField] RewardedAdvertisement RewardedAd;
-    [SerializeField] BannerAdvertisement BannerAd;
+    [SerializeField] BannerAd BannerAd;
     private string _gameId;
 
     void Awake()
