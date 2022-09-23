@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "783984967039",
+    "project_id": "connect-them-all",
+    "storage_bucket": "connect-them-all.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783984967039:android:7036d97345a4101252ae4a",
+        "android_client_info": {
+          "package_name": "com.TworuleGames.ConnectThemAll"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "783984967039-6l3b3ufnp88nshodshlc9hkc5rqtph8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCecYjN_3dkH23WgrHhNlsomZ2geiEWHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "783984967039-6l3b3ufnp88nshodshlc9hkc5rqtph8t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
