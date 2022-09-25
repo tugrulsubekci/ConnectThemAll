@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dependencies>
+    <androidPackages>
+        <repositories>
+            <repository>https://sdk-download.airbridge.io/maven</repository>
+        </repositories>
+        <androidPackage spec="org.jetbrains.kotlin:kotlin-stdlib:1.3.72" />
+        <androidPackage spec="org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7" />
+        <androidPackage spec="org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7" />
+       <androidPackage spec="io.airbridge:sdk-android:2.13.2" />
+    </androidPackages>
+    <iosPods>
+        <iosPod name="AirBridge" version="1.17.0" />
+    </iosPods>
+</dependencies>
