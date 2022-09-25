@@ -5016,6 +5016,7 @@ GameObject:
   - component: {fileID: 7032443895449329009}
   - component: {fileID: 7032443895449329010}
   - component: {fileID: 7032443895449329023}
+  - component: {fileID: 7032443895603011913}
   m_Layer: 5
   m_Name: Menu Manager
   m_TagString: Untagged
@@ -5118,6 +5119,18 @@ MonoBehaviour:
   vibrationOff: {fileID: 1885389803}
   soundOn: {fileID: 3098914476071512359}
   vibrationOn: {fileID: 1581033212864873275}
+--- !u!114 &7032443895603011913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7032443895449329011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81f6bd90202e1934a9944eb39d1f8db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7032443895473941788
 GameObject:
   m_ObjectHideFlags: 0
@@ -8764,7 +8777,6 @@ GameObject:
   - component: {fileID: 7032443896481217963}
   - component: {fileID: 7032443896481217975}
   - component: {fileID: 7032443896481217960}
-  - component: {fileID: 3130498331597677560}
   m_Layer: 5
   m_Name: RateUsButton
   m_TagString: Untagged
@@ -8876,7 +8888,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3130498331597677560}
+      - m_Target: {fileID: 7032443895603011913}
         m_TargetAssemblyTypeName: IAR_Manager, Assembly-CSharp
         m_MethodName: RateUsButton
         m_Mode: 1
@@ -8926,18 +8938,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3130498331597677560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7032443896481217965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81f6bd90202e1934a9944eb39d1f8db1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7032443896485392593
 GameObject:
   m_ObjectHideFlags: 0

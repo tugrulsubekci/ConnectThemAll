@@ -989,6 +989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e339bf469ffc4f4428ca820146f113eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bannerPosition: 4
   _androidAdUnitId: Banner_Android
   _iOSAdUnitId: Banner_iOS
 --- !u!114 &1690716097 stripped
@@ -1267,6 +1268,7 @@ MonoBehaviour:
   audioManager: {fileID: 365208368}
   menuManager: {fileID: 707189533}
   worldRankText: {fileID: 1690716097}
+  IAR_Manager: {fileID: 7032443895603011913}
 --- !u!114 &1908445094 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7032443896429326049, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}
@@ -1490,3 +1492,14 @@ PrefabInstance:
       objectReference: {fileID: 365208368}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}
+--- !u!114 &7032443895603011913 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7032443895603011913, guid: 3f74507199c5f3f49a5b3cc99a5a3c1e, type: 3}
+  m_PrefabInstance: {fileID: 7032443895603011911}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81f6bd90202e1934a9944eb39d1f8db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

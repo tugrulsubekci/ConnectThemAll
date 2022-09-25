@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private MenuManager menuManager;
     [SerializeField] private TextMeshProUGUI worldRankText;
+    [SerializeField] private IAR_Manager IAR_Manager;
 
     private List<Node> nodes = new List<Node>();
     private List<Block> blocks = new List<Block>();
@@ -650,9 +651,14 @@ public class GameManager : MonoBehaviour
         currentLevelText.text = DataManager.Instance.currentLevel.ToString();
         nextLevelText.text = (DataManager.Instance.currentLevel + 1).ToString();
         slider.value = slider.minValue;
-        if(!DataManager.Instance.noAds)
+        if(!DataManager.Instance.noAds & DataManager.Instance.currentLevel > 2)
         {
             InterstitialAd.ShowAd();
+        }
+
+        if(DataManager.Instance.currentLevel == 2)
+        {
+            IAR_Manager.AskReview();
         }
         CheckLevel();
     }

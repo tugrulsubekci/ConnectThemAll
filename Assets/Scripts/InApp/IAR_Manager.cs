@@ -11,6 +11,10 @@ public class IAR_Manager : MonoBehaviour
     public void RateUsButton()
     {
         FindObjectOfType<AudioManager>().Play("Click");
+        AskReview();
+    }
+    public void AskReview()
+    {
         StartCoroutine(nameof(RequestAndLaunchReview));
     }
     private IEnumerator RequestAndLaunchReview()
