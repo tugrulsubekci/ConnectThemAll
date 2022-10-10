@@ -116,7 +116,7 @@ SpriteAtlas:
   - Block2
   - vibration_on
   - pause
-  - Double
+  - double
   - Settings
   - Square
   - question
